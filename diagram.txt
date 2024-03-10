@@ -1,0 +1,26 @@
+        +-----------+     +-----------+     +-----------+     +-----------+
+        |   Users   |     | Messages  |     |  Follows  |     |   Likes   |
+        +-----------+     +-----------+     +-----------+     +-----------+
+        | id        |<-+  | id        |     | user_bein |  +->| id        |
+        | email     |   +->| text      |  +->| g_followe |  |  | user_id   |
+        | username  |     | timestamp |  |  | d_id      |--+  | message_id|
+        | image_url |     | user_id   |--+  | user_foll |     +-----------+
+        | ...       |     +-----------+  |  | owing_id  |
+        +-----------+                    +->|           |
+                                           +-----------+
+
+
+In the provided app.py related to authentication:
+
+How is the logged-in user being kept track of?
+
+The logged-in user is being kept track of using Flask's session management. When a user successfully logs in, their user ID is stored in the session using the do_login function. This user ID is retrieved from the session on subsequent requests to identify the currently logged-in user.
+What is Flask’s g object?
+
+Flask's g object, short for "global," is a special object provided by Flask that is used to store global variables during a request. It is a place to store data that is only valid for the duration of the request. This object is often used to store data that needs to be accessed across multiple parts of the application during a single request, such as the currently logged-in user.
+What is the purpose of add_user_to_g?
+
+The purpose of the add_user_to_g function is to add the currently logged-in user to the Flask global context (g) if the user is authenticated. This function runs before each request (@app.before_request) and checks if the user is logged in by checking if the user ID is present in the session. If the user is logged in, it retrieves the user object from the database and assigns it to g.user.
+What does @app.before_request mean?
+
+@app.before_request is a decorator in Flask used to register a function to run before each request is processed by the application. Functions decorated with @app.before_request will be called automatically by Flask before any other view function or route handler is executed. In this context, add_user_to_g is registered to run before each request, allowing it to set up the g object with the currently logged-in user.
